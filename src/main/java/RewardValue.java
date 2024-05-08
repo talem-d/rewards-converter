@@ -1,38 +1,29 @@
 public class RewardValue {
-    private double cashValue;
-    private double milesValue;
+    private final double cashValue;
+    public static final double MILES_TO_CASH_CONVERSION_RATE = 0.0035;
 
-    // Constants to define expected range or value types
-    private static final double MILES_PER_CASH = 0.0035;
-    private static final double CASH_PER_MILE = 1 / MILES_PER_CASH; // Approximately 285.714
-
-    // Single constructor assuming differentiation based on a threshold or pattern
-    public RewardValue(double value) {
-        // Assuming that value types can be distinguished (e.g., cash values are typically less than 1000 and miles values are much larger)
-        // This is a risky assumption and should be replaced with a more reliable method if possible
-        if (value < 1000) { // Assuming it's cash
-            this.cashValue = value;
-            this.milesValue = convertCashToMiles(value);
-        } else { // Assuming it's miles
-            this.milesValue = value;
-            this.cashValue = convertMilesToCash(value);
-        }
+    public RewardValue(double cashValue) {
+        this.cashValue = cashValue;
     }
 
-    private double convertCashToMiles(double cash) {
-        return cash * MILES_PER_CASH;
+    public RewardValue(int milesValue) {
+        this.cashValue = convertToCash(milesValue);
     }
 
-    private double convertMilesToCash(double miles) {
-        return miles * CASH_PER_MILE;
+    private static int convertToMiles(double cashValue) {
+        return (int) (cashValue / MILES_TO_CASH_CONVERSION_RATE);
+    }
+
+    private static double convertToCash(int milesValue) {
+        return milesValue * MILES_TO_CASH_CONVERSION_RATE;
     }
 
     public double getCashValue() {
-        return this.cashValue;
+        return cashValue;
     }
 
-    public double getMilesValue() {
-        return this.milesValue;
+    public int getMilesValue() {
+        return convertToMiles(this.cashValue);
     }
 
 }
